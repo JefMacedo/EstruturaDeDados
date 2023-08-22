@@ -5,9 +5,9 @@
 Usando a linguagem C pois, a linguagem C não é orientada a objetos, é uma linguagem imperativa e estruturada.
 Ou seja, ela permite de maneira mais explicita a alocação e desalocação de memória, gerenciamento de ponteiros e estruturas.
 
-Necessário ter instalado o [GCC](https://gcc.gnu.org/)
-Necessário um editor de código (vscode, sublime, notepad++)
-Recomendado não usar uma IDE. Pois irá diminui a quantidade de interferência que uma IDE causa.
+- Necessário ter instalado o [GCC](https://gcc.gnu.org/)
+- Necessário um editor de código (vscode, sublime, notepad++)
+- Recomendado não usar uma IDE. Pois irá diminui a quantidade de interferência que uma IDE causa.
 
 Diferença entre um código Java e um C
 
@@ -37,10 +37,13 @@ int main() {
 ```
 
 Compilar e executar: 
+
 `$ gcc HelloWorld.c -o HelloWorld`
+
 `$ ./HelloWorld`
 
 Saída esperada:
+
 `$ Hello World!`
 
 ## Criando uma estrutura simples
@@ -58,6 +61,7 @@ Em Java e outras linguagens orientadas a objetos criamos uma classe com atributo
 Depois fazemos outra classe para estarmos utilizando esse classe.
 
 Em C temos uma sintaxe própria para definir estruturas. A sintaxe `struct { ... }` define uma estrutura com os campos definidos dentro das chaves. a sintaxe `typedef ... NameStruct` define o nome para a estrutura que foi criada.
+
 Ex.: 
 ```c
 typedef struct { 
@@ -67,15 +71,17 @@ typedef struct {
 ```
 
 Podemos definir um variável para declarar um tipo simples. 
+
 Ex.: 
 ```c
 typedef int CHAVE
 ```
 Poderemos utilizar no código a palavra CHAVE para representar o tipo int.
 
-##### Uso de memória em Java:
+#### Uso de memória em Java:
 
 O Java é uma linguagem de programação que utiliza um sistema de gerenciamento de memória bastante eficiente e automatizado, conhecido como "*Garbage Collection*" (Coleta de Lixo).
+
 Em Java temos algumas divisões no processo de gerenciamento de memória.
 - *Heap Memory* (Memória Heap): É a região onde os objetos Java são alocados dinamicamente durante a execução do programa. O *heap* é dividido em duas áreas principais: a área *Young* e a área *Old*. A área *Young* é onde os objetos recém-criados são alocados. Com o tempo, alguns objetos sobrevivem e são movidos para a área *Old*.
 - *Garbage Collection*: O Java utiliza um processo de coleta de lixo para identificar e liberar automaticamente a memória ocupada por objetos que não são mais referenciados pelo programa. Isso evita vazamentos de memória, onde a memória é ocupada por objetos inacessíveis.
@@ -105,6 +111,7 @@ No exemplo em C a alocação de memória ocorre da seguinte maneira durante a ex
 - Assim que a função main é concluída, a memória alocada para pessoa1 é automaticamente liberada, já que está na pilha. A constante alturaMaxima é substituída diretamente pelo pré-processador e não ocupa espaço de memória em si.
 
 O uso de memória é diferente entre Java e C principalmente devido às suas diferenças em relação à alocação e desalocação de memória, gerenciamento de memória e abstração.
+
 As diferenças no uso de memória entre Java e C refletem as abordagens das linguagens em relação ao equilíbrio entre controle, automação, portabilidade e desempenho. C oferece um maior controle, mas com mais responsabilidade, enquanto Java busca automatizar muitos aspectos do gerenciamento de memória em prol da simplicidade e da prevenção de erros comuns.
 
 ## Ponteiros
@@ -114,10 +121,23 @@ Em C há um distinção explícita entre um tipo(ou estrutura) e um endereço:
  - int\* y; significa que y é uma variável do tipo endereço para o inteiro.
 O asterisco (\*) após o tipo int indica que estamos falando de um endereço para inteiro e não mais de um inteiro, ou seja, aponta para a posição de memória onde é armazenado o int.
 
-#### Ponteiros para alocação de memória
+### Ponteiros para alocação de memória
 
 Em C há uma função para alocação de memória:
 malloc ( memory allocation)
 - Recebe como parâmetro o número de bytes que se deseja alocar.
 - Retorna o endereço inicial do bloco de bytes que foi alocado, porém tem o tipo void\* (ponteiro para void).
 - Há um operador chamado sizeof que recebe como parâmetro um tipo (simples ou composto) e retorna a quantidade de bytes ocupada por esse tipo.
+
+## Lista linear sequencial
+
+A lista é uma estrutura de dados na qual cada elemento é procedido por um elemento e sucedido por outro (exceto o primeiro que não tem um predecessor e o último que não tem um sucessor).
+
+Os elementos estão em uma dada ordem.
+Ex.: A ordem de inclusão ou ordenados por uma chave.
+
+Uma lista linear sequencial é uma lista linear na qual a ordem lógica dos elementos é a mesma ordem física (em memória) dos elementos. Ou seja, os elementos vizinhos na lista estarão em posições vizinhas na memória.
+
+#### Modelagem
+
+Modelaremos uma lista linear sequencial usando um arranjo de registro, os registros conterão as informações de interesse do usuário, nosso arranjo terá um tamanho fixo e controlaremos o número de elementos com uma variável adicional.
