@@ -138,7 +138,7 @@ Ex.: A ordem de inclusão ou ordenados por uma chave.
 
 Uma lista linear sequencial é uma lista linear na qual a ordem lógica dos elementos é a mesma ordem física (em memória) dos elementos. Ou seja, os elementos vizinhos na lista estarão em posições vizinhas na memória.
 
-#### Modelagem
+### Modelagem
 
 Modelaremos uma lista linear sequencial usando um arranjo de registro, os registros conterão as informações de interesse do usuário, nosso arranjo terá um tamanho fixo e controlaremos o número de elementos com uma variável adicional.
 
@@ -234,6 +234,28 @@ int buscaSequencial(LISTA* l, TIPOCHAVE ch) {
     return -1;
 }
 ```
+Outra opção de busca é a utilização de um elemento auxiliar(sentinela), ele será inserido após o último elemento válido durante a busca, ou seja, no final da lista. Ele irá conter a chave do elemento buscado.
+
+```c
+int buscaSentinela(LISTA* l, TIPOCHAVE ch) {
+    int i = 0;
+    l->A[l->nroElem].chave = ch;
+    while(l->A[i].chave != ch) i++;
+    if(i == l->nroElem) return -1;
+    else return i;
+}
+```
+
+Caso a lista estiver cheia não haverá espaço para o sentinela. Portanto será criado uma nova lista com uma extra para garantir o espaço extra para o sentinela. Essa posição extra nunca terá um registro válido.
+
+A nossa estrutura da lista ficará:
+
+```c
+typedef struct {
+    REGISTRO A[MAX+1];
+    int nroElem;
+} LISTA;
+```
 
 #### Inserção de um elemento
 
@@ -292,5 +314,53 @@ Para reinicializarmos esta estrutura basta passar 0 (zero) no campo nroElem.
 ```c
 void reinicializarLista(LISTA* l) {
     l->nroElem = 0;
+}
+```
+
+#### Busca binária
+
+Em comparação as buscas implementadas anteriormente, a busca binária é mais eficiente que elas, porém é necessário que os elementos estejam ordenados. Para implementar em nosso código se faz necessário mudar a função de inserção dos elementos para a lógica do *insertion sort*.
+
+*Insertion sort*
+
+```c
+bool insereElemListaOrd(LISTA* l, REGISTRO reg) {
+    if(l->nroElem >= MAX) return false;
+    int pos = l->nroElem;
+    while (pos > 0 && l->A[pos-1].chave > reg.chave) {
+        l->A[pos] = l->A[pos-1];
+        pos--;
+    }
+    l-A[pos] =  reg;
+    nroElem++;
+    return true;
+}
+```
+
+*Busca pela chave(binária)*
+
+```c
+int buscaBinaria(LISTA* l, TIPOCHAVE ch) {
+    int esq = 0, dir = l->nroElem-1, meio;
+    while (esq <= dir) {
+        meio ((esq + dir) / 2);
+        if (l->A[meio].chave < ch) esq = meio + 1;
+        else dir = meio - 1;
+    }
+    return -1;
+}
+```
+
+Tornando a exclusão mais eficiente com a busca binária:
+
+```c
+bool excluiElemListaBinaria(TIPOCHAVE ch, LISTA* l) {
+    int pos, j;
+    pos = buscaBinaria(l,ch);
+    if (pos == -1) return false;
+    for (j = pos; j < l->nroElem - 1; j++)
+        l->A[j] = l->A[j+1];
+    l->nroElem--;
+    return true;
 }
 ```

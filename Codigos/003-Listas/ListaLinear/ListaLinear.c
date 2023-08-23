@@ -12,7 +12,7 @@ typedef struct {
 } REGISTRO;
 
 typedef struct {
-    REGISTRO A[MAX];
+    REGISTRO A[MAX+1];
     int nroElem;
 } LISTA;
 
@@ -46,6 +46,16 @@ int buscaSequencial(LISTA* l, TIPOCHAVE ch) {
     return -1;
 }
 
+int buscaSentinela(LISTA* l, TIPOCHAVE ch) {
+    int i = 0;
+    l->A[l->nroElem].chave = ch;
+
+    while(l->A[i].chave != ch) i++;
+
+    if(i == l->nroElem) return -1;
+    else return i;
+}
+
 bool insereElemLista(LISTA* l, REGISTRO reg, int i) {
     int j;
 
@@ -75,6 +85,42 @@ bool excluiElemLista(TIPOCHAVE ch, LISTA* l) {
 
 void reinicializarLista(LISTA* l) {
     l->nroElem = 0;
+}
+
+bool insereElemListaOrd(LISTA* l, REGISTRO reg) {
+    if(l->nroElem >= MAX) return false;
+    int pos = l->nroElem;
+    while (pos > 0 && l->A[pos-1].chave > reg.chave) {
+        l->A[pos] = l->A[pos-1];
+        pos--;
+    }
+    l-A[pos] =  reg;
+    nroElem++;
+    return true;
+}
+
+int buscaBinaria(LISTA* l, TIPOCHAVE ch) {
+    int esq = 0, dir = l->nroElem-1, meio;
+    while (esq <= dir) {
+        meio ((esq + dir) / 2);
+        if (l->A[meio].chave < ch) esq = meio + 1;
+        else dir = meio - 1;
+    }
+    return -1;
+}
+
+bool excluiElemListaBinaria(TIPOCHAVE ch, LISTA* l) {
+    int pos, j;
+    pos = buscaBinaria(l,ch);
+    
+    if (pos == -1) return false;
+
+    for (j = pos; j < l->nroElem - 1; j++)
+        l->A[j] = l->A[j+1];
+
+    l->nroElem--;
+
+    return true;
 }
 
 // TODO
