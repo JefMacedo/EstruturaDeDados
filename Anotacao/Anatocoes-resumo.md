@@ -141,3 +141,156 @@ Uma lista linear sequencial é uma lista linear na qual a ordem lógica dos elem
 #### Modelagem
 
 Modelaremos uma lista linear sequencial usando um arranjo de registro, os registros conterão as informações de interesse do usuário, nosso arranjo terá um tamanho fixo e controlaremos o número de elementos com uma variável adicional.
+
+#### Funções de gerenciamento
+
+Será implementado funções para:
+
+- Inicializar a Estrutura;
+- Retornar a quantidade de elementos válidos;
+- Exibir os elementos da estrutura;
+- Buscar por um elemento na estrutura;
+- Inserir elementos na estrutura;
+- Excluir elementos da estrutura;
+- Reinicializar a estrutura;
+
+#### Inicialização
+
+Para inicializar uma estrutura, precisamos pensar nos valores adequados para cada um dos campos de nossa estrutura. 
+
+```c
+#define MAX 50
+
+typedef int TIPOCHAVE;
+
+typedef struct {
+    TIPOCHAVE chave;
+    // Outros campos...
+} REGISTRO;
+
+typedef struct {
+    REGISTRO A[MAX];
+    int nroElem;
+} LISTA;
+```
+
+Para inicalizarmos uma lista sequencial já criada pelo usuário, só se faz necessário colocar o valor 0 (zero) no número de elementos válidos.
+
+```c
+void inicializarLista(LISTA l) {
+    l.nroElem = 0;
+}
+```
+
+- Nessa função ao ser executada ela faz uma cópia da lista original e suas alterações não intereferem na lista original. Ou seja, após a execução teremos duas listas, uma com valores vázios e sem inicialização e outra com valores vázio e inicializada.
+
+```c
+void inicializarLista(LISTA* l) {
+    l->nroElem = 0;
+}
+```
+
+- Nessa função ao ser executada ela faz uma referencia ao endereço de memória da lista original e suas alterações substituem os valores da lista original. Portanto, após a execução teremos apenas uma lista na memória com valores vázios e inicializada.
+
+#### Retorno números de elementos
+
+Para essa estrutura basta retornar o valor do campo nroElem.
+
+```c
+int tamanho(LISTA* l) {
+    return l->nroElem;
+}
+```
+
+#### Exibir os elementos
+
+Para exibir os elementos da estrutura precisaremos percorrer todos os elementos válidos e imprimir suas chaves.
+
+```c
+void exibirLista(LISTA* l) {
+    int i;
+    printf("Lista: \" ");
+    for (i = 0; i < l->nroElem; i++) {
+        printf("%i ", l->A[i].chave);
+    }
+    printf("\"\n");
+}
+```
+
+#### Buscar por elementos
+
+A função de buscar deverá:
+- Receber uma chave do usuário;
+- Caso seja encontrado retornará a posição em este elemento se encontra na lista;
+- Retornar -1 caso não haja um registro com essa chave na lista;
+
+```c
+int buscaSequencial(LISTA* l, TIPOCHAVE ch) {
+    int i = 0;
+    while (i < l->nroElem) {
+        if(ch == l->A[i].chave) return i;
+        else i++;
+    }
+    return -1;
+}
+```
+
+#### Inserção de um elemento
+
+O usuário passa como parâmetro um registro a ser inserido na lista.
+
+Há diferentes possibilidades de inserção:
+
+- No início;
+- No meio;
+- No fim;
+- Ordenada pela chave;
+- Numa posição indicada pelo usuário;
+
+No exemplo abaixo o usuário indicará qual será a posição, lembrando que as posições vão de 0 à `MAX - 1`.
+
+Como inserir?
+
+Se a lista não estiver cheia e o indice passado pelo usuário for válido:
+- Desloca todos os elementos posteriores para uma posição a direita;
+- Insere o elemento na posição desejada;
+- Soma 1 no campo `nroElem` e retorna `true`;
+- caso contrário retorna `false`;
+
+```c
+bool insereElemLista(LISTA* l, REGISTRO reg, int i) {
+    int j;
+    if ((l->nroElem == MAX) || (i < 0) || (i > l->nroElem))
+        return false;
+    for (j = l->nroElem; j > i; j--) l->A[j] = l->A[j-1];
+    l->A[i] = reg;
+    l->nroElem++;
+    return true;
+}
+```
+
+#### Exclusão de um elemento
+
+O usuário passa a chava do elemento que ele quer excluir e se houver um elemento com esta chave na lista, "Exclui este elemento", desloca todos os elementos posteriores para a esquerda, diminui em um o campo `nroElem` e retorna `true`, caso contrário retornará `false`.
+
+```c
+bool excluiElemLista(TIPOCHAVE ch, LISTA* l) {
+    int pos, j;
+    pos = buscaSequencial(l,ch);
+    if (pos == -1) return false;
+    for (j = pos; j < l->nroElem - 1; j++)
+        l->A[j] = l->A[j+1];
+    l->nroElem--;
+    return true;
+}
+```
+
+#### Reinicialização da estrutura
+
+Para reinicializarmos esta estrutura basta passar 0 (zero) no campo nroElem.
+
+```c
+void reinicializarLista(LISTA* l) {
+    l->nroElem = 0;
+}
+```
